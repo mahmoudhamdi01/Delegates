@@ -7,6 +7,7 @@ using Delegates.Interface.IServices.MasterData.VisitDestination;
 using Delegates.Interface.IServices.MasterData.Warehouse;
 using Delegates.Interface.IServices.Order;
 using Delegates.Interface.IServices.Product;
+using Delegates.Interface.IServices.RegisterDevice;
 using Delegates.Interface.IServices.UserManagement.Login;
 using Delegates.Interface.IServices.UserManagement.User;
 using Delegates.Interface.IServices.Visit;
@@ -32,5 +33,6 @@ namespace Delegates.Interface.Interfaces
         IOrderService OrderService { get; }
         ICompanyPurchaseService CompanyPurchaseService { get; }
         IVisitService VisitService { get; }
+        IDeviceTokenService DeviceTokenService { get; }
     }
 }

@@ -4,6 +4,7 @@ using Delegates.Infrastructure.Enums.UserManagement;
 using Delegates.Infrastructure.Exceptions;
 using Delegates.Infrastructure.Shared.Pagination;
 using Delegates.Interface.Interfaces;
+using Delegates.Interface.IServices.RegisterDevice;
 using Delegates.Interface.IServices.Visit;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Delegates.Application.Services.MasterData
 {
-    public class VisitService(IUnitOfWork unitOfWork, IEntityAuditHelper auditHelper) : IVisitService
+    public class VisitService(IUnitOfWork unitOfWork, IEntityAuditHelper auditHelper, IPushNotificationService pushNotificationService) : IVisitService
     {
         private static readonly Expression<Func<Visit, VisitListDto>> ListSelector = x => new VisitListDto
         {
@@ -58,6 +59,8 @@ namespace Delegates.Application.Services.MasterData
 
             await visitsRepo.AddAsync(visit);
             await unitOfWork.SaveChangesAsync();
+
+            await pushNotificationService.NotifyUserAsync(visit.DelegateId, "زيارة جديدة", $"تم جدولة زيارة جديدة لك في {visit.Address}");
 
             return await GetByIdAsync(visit.Id);
         }

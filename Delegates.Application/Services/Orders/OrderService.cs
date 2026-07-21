@@ -14,6 +14,7 @@ using Delegates.Interface.IServices.OrderStatusHistory;
 using Delegates.Interface.IServices.OrderWarehouseTask;
 using Delegates.Interface.IServices.PostponeOrder;
 using Delegates.Interface.IServices.PostponeOrderCompany;
+using Delegates.Interface.IServices.RegisterDevice;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ using CreateOrderDto = Delegates.Interface.IServices.Order.CreateOrderDto;
 
 namespace Delegates.Application.Services.Orders
 {
-    public class OrderService(IUnitOfWork unitOfWork, IEntityAuditHelper auditHelper) : IOrderService
+    public class OrderService(IUnitOfWork unitOfWork, IEntityAuditHelper auditHelper, IPushNotificationService pushNotificationService) : IOrderService
     {
         public async Task<OrderReadDto> CreateAsync(CreateOrderDto dto)
         {
@@ -61,6 +62,9 @@ namespace Delegates.Application.Services.Orders
             var ordersRepo = unitOfWork.GetRepository<Order, int>();
             await ordersRepo.AddAsync(order);
             await unitOfWork.SaveChangesAsync();
+
+            foreach (var task in order.WarehouseTasks)
+                await pushNotificationService.NotifyUserAsync(task.DelegateId, "طلب جديد", $"تم إسناد طلب رقم {order.Code} إليك");
 
             return await GetByIdAsync(order.Id);
         }
@@ -582,6 +586,8 @@ namespace Delegates.Application.Services.Orders
 
             ordersRepo.Update(order);
             await unitOfWork.SaveChangesAsync();
+
+            await pushNotificationService.NotifyUserAsync(dto.NewDelegateId, "طلب جديد", $"تم إسناد طلب رقم {order.Code} إليك");
 
             return await GetByIdAsync(orderId);
         }

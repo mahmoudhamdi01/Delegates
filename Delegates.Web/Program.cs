@@ -5,6 +5,7 @@ using Delegates.Infrastructure.Entities.UserManagement;
 using Delegates.Infrastructure.Enums.UserManagement;
 using Delegates.Web.ExtensionClasses;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 
 namespace Delegates.Web
@@ -16,7 +17,7 @@ namespace Delegates.Web
             var builder = WebApplication.CreateBuilder(args);
 
             // ── Extension Methods ────────────────────────────────────────────────
-            builder.Services.AddPresentationAndSwagger();
+            builder.Services.AddPresentationAndSwagger(builder.Configuration);
             builder.Services.AddApplicationServices(builder.Configuration);
             builder.Services.AddIdentityAndJwt(builder.Configuration);
 
@@ -24,6 +25,17 @@ namespace Delegates.Web
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddRateLimiter(options =>
+            {
+                options.AddFixedWindowLimiter("LoginPolicy", opt =>
+                {
+                    opt.PermitLimit = 5;
+                    opt.Window = TimeSpan.FromMinutes(1);
+                    opt.QueueLimit = 0;
+                });
+                options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+            });
 
             var app = builder.Build();
 
@@ -40,8 +52,10 @@ namespace Delegates.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseCors("DefaultCorsPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseRateLimiter();
 
             app.MapControllers();
 

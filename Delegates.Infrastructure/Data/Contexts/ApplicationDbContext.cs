@@ -35,6 +35,7 @@ namespace Delegates.Infrastructure.Data.Contexts
         public DbSet<OrderPostponedCompanyProduct> OrderPostponedCompanyProducts { get; set; }
         public DbSet<OrderContactLog> OrderContactLogs { get; set; }
         public DbSet<Visit> Visits { get; set; }
+        public DbSet<DeviceToken> DeviceTokens { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, ICurrentUserContext currentUserContext)
             : base(options)

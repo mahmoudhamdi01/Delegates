@@ -34,6 +34,9 @@ namespace Delegates.Web.ExtensionClasses
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Something Went Wrong");
+
+                var isKnownException = ex is NotFoundException or UnAuthorizedException or BadRequestException;
+
                 _httpContext.Response.StatusCode = ex switch
                 {
                     NotFoundException => StatusCodes.Status404NotFound,
@@ -45,7 +48,7 @@ namespace Delegates.Web.ExtensionClasses
                 var Response = new ErrorToReturn()
                 {
                     StatusCode = _httpContext.Response.StatusCode,
-                    ErrorMessage = ex.Message,
+                    ErrorMessage = isKnownException ? ex.Message : "حدث خطأ غير متوقع، برجاء المحاولة لاحقًا",
                     Errors = ex is BadRequestException badRequestException ? badRequestException.Errors : null
                 };
 

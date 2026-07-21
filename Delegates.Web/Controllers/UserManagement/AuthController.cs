@@ -3,6 +3,7 @@ using Delegates.Interface.IServices.UserManagement.Login;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Delegates.Web.Controllers.UserManagement
 {
@@ -10,6 +11,7 @@ namespace Delegates.Web.Controllers.UserManagement
     {
         [HttpPost("Login")]
         [AllowAnonymous]
+        [EnableRateLimiting("LoginPolicy")]
         public async Task<ActionResult<LoginResponseDto>> Login(LoginRequestDto request)
         {
             var result = await serviceManager.AuthService.LoginAsync(request);

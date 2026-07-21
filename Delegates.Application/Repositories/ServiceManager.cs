@@ -15,6 +15,7 @@ using Delegates.Interface.IServices.MasterData.VisitDestination;
 using Delegates.Interface.IServices.MasterData.Warehouse;
 using Delegates.Interface.IServices.Order;
 using Delegates.Interface.IServices.Product;
+using Delegates.Interface.IServices.RegisterDevice;
 using Delegates.Interface.IServices.UserManagement.Login;
 using Delegates.Interface.IServices.UserManagement.User;
 using Delegates.Interface.IServices.Visit;
@@ -33,7 +34,8 @@ namespace Delegates.Application.Repositories
         ICurrentUserContext currentUserContext,
         IMapper mapper,
         IPasswordHasher<ApplicationUser> passwordHasher,
-        IJwtTokenService jwtTokenService) : IServiceManager
+        IJwtTokenService jwtTokenService,
+        IPushNotificationService pushNotificationService) : IServiceManager
     {
         private readonly Lazy<IAuthService> _lazyAuthService =
             new(() => new AuthService(unitOfWork, passwordHasher, jwtTokenService));
@@ -72,7 +74,7 @@ namespace Delegates.Application.Repositories
         public IProductService ProductService => _lazyProductService.Value;
 
         private readonly Lazy<IOrderService> _lazyOrderService =
-            new(() => new OrderService(unitOfWork, entityAuditHelper));
+            new(() => new OrderService(unitOfWork, entityAuditHelper, pushNotificationService));
         public IOrderService OrderService => _lazyOrderService.Value;
 
         private readonly Lazy<ICompanyPurchaseService> _lazyCompanyPurchaseService =
@@ -80,7 +82,11 @@ namespace Delegates.Application.Repositories
         public ICompanyPurchaseService CompanyPurchaseService => _lazyCompanyPurchaseService.Value;
 
         private readonly Lazy<IVisitService> _lazyVisitService =
-            new(() => new VisitService(unitOfWork, entityAuditHelper));
+            new(() => new VisitService(unitOfWork, entityAuditHelper, pushNotificationService));
         public IVisitService VisitService => _lazyVisitService.Value;
+
+        private readonly Lazy<IDeviceTokenService> _lazyDeviceTokenService =
+            new(() => new DeviceTokenService(unitOfWork, entityAuditHelper));
+        public IDeviceTokenService DeviceTokenService => _lazyDeviceTokenService.Value;
     }
 }

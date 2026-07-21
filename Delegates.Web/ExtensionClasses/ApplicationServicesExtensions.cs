@@ -1,8 +1,12 @@
 ﻿using Delegates.Application.MappingProfile.MasterData;
 using Delegates.Application.Repositories;
+using Delegates.Application.Services.UserManagement;
 using Delegates.Infrastructure.Entities.UserManagement;
 using Delegates.Infrastructure.Shared;
 using Delegates.Interface.Interfaces;
+using Delegates.Interface.IServices.RegisterDevice;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Identity;
 
 namespace Delegates.Web.ExtensionClasses
@@ -25,7 +29,15 @@ namespace Delegates.Web.ExtensionClasses
             services.AddScoped<IServiceManager, ServiceManager>();
             services.AddScoped<IPasswordHasher<ApplicationUser>, PasswordHasher<ApplicationUser>>();
             services.AddScoped<IJwtTokenService, JwtTokenService>();
+            services.AddScoped<IPushNotificationService, FirebasePushNotificationService>();
 
+            if (FirebaseApp.DefaultInstance is null)
+            {
+                FirebaseApp.Create(new AppOptions
+                {
+                    Credential = GoogleCredential.FromFile(configuration["Firebase:ServiceAccountKeyPath"])
+                });
+            }
             // Localization & Audit
             services.AddScoped<ILocalizationService, LocalizationService>();
             services.AddScoped<EntityAuditHelper>();

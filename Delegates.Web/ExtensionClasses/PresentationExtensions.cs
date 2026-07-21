@@ -5,11 +5,22 @@ namespace Delegates.Web.ExtensionClasses
 {
     public static class PresentationExtensions
     {
-        public static IServiceCollection AddPresentationAndSwagger(this IServiceCollection services)
+        public static IServiceCollection AddPresentationAndSwagger(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddControllers()
                 .AddJsonOptions(options =>
                  options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter()));
+
+            var allowedOrigins = configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
+            services.AddCors(options =>
+            {
+                options.AddPolicy("DefaultCorsPolicy", policy =>
+                {
+                    policy.WithOrigins(allowedOrigins)
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
+            });
 
             services.AddEndpointsApiExplorer();
 
