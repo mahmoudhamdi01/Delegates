@@ -29,15 +29,25 @@ namespace Delegates.Web.ExtensionClasses
             services.AddScoped<IServiceManager, ServiceManager>();
             services.AddScoped<IPasswordHasher<ApplicationUser>, PasswordHasher<ApplicationUser>>();
             services.AddScoped<IJwtTokenService, JwtTokenService>();
+
             services.AddScoped<IPushNotificationService, FirebasePushNotificationService>();
 
-            if (FirebaseApp.DefaultInstance is null)
+            try
             {
-                FirebaseApp.Create(new AppOptions
+                var credentialPath = configuration["Firebase:ServiceAccountKeyPath"];
+                if (FirebaseApp.DefaultInstance is null && !string.IsNullOrWhiteSpace(credentialPath) && File.Exists(credentialPath))
                 {
-                    Credential = GoogleCredential.FromFile(configuration["Firebase:ServiceAccountKeyPath"])
-                });
+                    FirebaseApp.Create(new AppOptions
+                    {
+                        Credential = GoogleCredential.FromFile(credentialPath)
+                    });
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Firebase initialization failed: {ex.Message}");
+            }
+
             // Localization & Audit
             services.AddScoped<ILocalizationService, LocalizationService>();
             services.AddScoped<EntityAuditHelper>();

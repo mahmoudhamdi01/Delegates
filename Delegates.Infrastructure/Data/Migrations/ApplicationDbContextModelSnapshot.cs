@@ -97,7 +97,7 @@ namespace Delegates.Infrastructure.Data.Migrations
                         .IsUnique()
                         .HasFilter("[IsDeleted] = 0");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("Delegates.Infrastructure.Entities.Inventory.ProductStock", b =>
@@ -143,7 +143,7 @@ namespace Delegates.Infrastructure.Data.Migrations
                         .IsUnique()
                         .HasFilter("[IsDeleted] = 0");
 
-                    b.ToTable("ProductStocks");
+                    b.ToTable("ProductStocks", (string)null);
                 });
 
             modelBuilder.Entity("Delegates.Infrastructure.Entities.MasterData.Client", b =>
@@ -211,7 +211,7 @@ namespace Delegates.Infrastructure.Data.Migrations
                         .IsUnique()
                         .HasFilter("[IsDeleted] = 0");
 
-                    b.ToTable("Clients");
+                    b.ToTable("Clients", (string)null);
                 });
 
             modelBuilder.Entity("Delegates.Infrastructure.Entities.MasterData.Company", b =>
@@ -265,7 +265,7 @@ namespace Delegates.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Companies");
+                    b.ToTable("Companies", (string)null);
                 });
 
             modelBuilder.Entity("Delegates.Infrastructure.Entities.MasterData.ProductCategory", b =>
@@ -305,7 +305,7 @@ namespace Delegates.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductCategories");
+                    b.ToTable("ProductCategories", (string)null);
                 });
 
             modelBuilder.Entity("Delegates.Infrastructure.Entities.MasterData.UnitOfMeasure", b =>
@@ -345,7 +345,7 @@ namespace Delegates.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UnitOfMeasures");
+                    b.ToTable("UnitOfMeasures", (string)null);
                 });
 
             modelBuilder.Entity("Delegates.Infrastructure.Entities.MasterData.Visit", b =>
@@ -404,7 +404,7 @@ namespace Delegates.Infrastructure.Data.Migrations
 
                     b.HasIndex("VisitDestinationId");
 
-                    b.ToTable("Visits");
+                    b.ToTable("Visits", (string)null);
                 });
 
             modelBuilder.Entity("Delegates.Infrastructure.Entities.MasterData.VisitDestination", b =>
@@ -444,7 +444,7 @@ namespace Delegates.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("VisitDestinations");
+                    b.ToTable("VisitDestinations", (string)null);
                 });
 
             modelBuilder.Entity("Delegates.Infrastructure.Entities.MasterData.Warehouse", b =>
@@ -498,7 +498,7 @@ namespace Delegates.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Warehouses");
+                    b.ToTable("Warehouses", (string)null);
                 });
 
             modelBuilder.Entity("Delegates.Infrastructure.Entities.Orders.Order", b =>
@@ -575,7 +575,7 @@ namespace Delegates.Infrastructure.Data.Migrations
                         .IsUnique()
                         .HasFilter("[IsDeleted] = 0");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("Delegates.Infrastructure.Entities.Orders.OrderContactLog", b =>
@@ -615,7 +615,7 @@ namespace Delegates.Infrastructure.Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderContactLogs");
+                    b.ToTable("OrderContactLogs", (string)null);
                 });
 
             modelBuilder.Entity("Delegates.Infrastructure.Entities.Orders.OrderPostponedCompany", b =>
@@ -656,7 +656,7 @@ namespace Delegates.Infrastructure.Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderPostponedCompanies");
+                    b.ToTable("OrderPostponedCompanies", (string)null);
                 });
 
             modelBuilder.Entity("Delegates.Infrastructure.Entities.Orders.OrderPostponedCompanyProduct", b =>
@@ -700,7 +700,7 @@ namespace Delegates.Infrastructure.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderPostponedCompanyProducts");
+                    b.ToTable("OrderPostponedCompanyProducts", (string)null);
                 });
 
             modelBuilder.Entity("Delegates.Infrastructure.Entities.Orders.OrderStatusHistory", b =>
@@ -739,7 +739,7 @@ namespace Delegates.Infrastructure.Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderStatusHistories");
+                    b.ToTable("OrderStatusHistories", (string)null);
                 });
 
             modelBuilder.Entity("Delegates.Infrastructure.Entities.Orders.OrderWarehouseTask", b =>
@@ -792,7 +792,7 @@ namespace Delegates.Infrastructure.Data.Migrations
 
                     b.HasIndex("WarehouseId");
 
-                    b.ToTable("OrderWarehouseTasks");
+                    b.ToTable("OrderWarehouseTasks", (string)null);
                 });
 
             modelBuilder.Entity("Delegates.Infrastructure.Entities.Orders.OrderWarehouseTaskItem", b =>
@@ -836,7 +836,7 @@ namespace Delegates.Infrastructure.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderWarehouseTaskItems");
+                    b.ToTable("OrderWarehouseTaskItems", (string)null);
                 });
 
             modelBuilder.Entity("Delegates.Infrastructure.Entities.UserManagement.Account", b =>
@@ -871,7 +871,7 @@ namespace Delegates.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Accounts");
+                    b.ToTable("Accounts", (string)null);
                 });
 
             modelBuilder.Entity("Delegates.Infrastructure.Entities.UserManagement.ApplicationUser", b =>
@@ -938,7 +938,7 @@ namespace Delegates.Infrastructure.Data.Migrations
                         .IsUnique()
                         .HasFilter("[IsDeleted] = 0");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Delegates.Infrastructure.Entities.UserManagement.DeviceToken", b =>
@@ -987,7 +987,7 @@ namespace Delegates.Infrastructure.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("DeviceTokens");
+                    b.ToTable("DeviceTokens", (string)null);
                 });
 
             modelBuilder.Entity("Delegates.Infrastructure.Entities.Inventory.Product", b =>
